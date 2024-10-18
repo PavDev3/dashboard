@@ -52,8 +52,8 @@ export const routes: Routes = [
         path: 'users-list',
         title: 'Users List',
         loadComponent: () =>
-          import('./dashboard/pages/users/users.component').then(
-            (m) => m.UsersComponent
+          import('./dashboard/pages/users/users-list.component').then(
+            (m) => m.UsersListComponent
           ),
       },
       {
