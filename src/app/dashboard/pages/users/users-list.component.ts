@@ -12,5 +12,5 @@ import { UsersService } from './../../../services/users.services';
   styles: ``,
 })
 export class UsersListComponent {
-  readonly UsersService = inject(UsersService);
+  public usersService = inject(UsersService);
 }

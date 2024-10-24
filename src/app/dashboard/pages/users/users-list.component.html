@@ -1,10 +1,10 @@
 <app-title title="Users List"></app-title>
 
 <ul>
-  @for (user of UsersService.users(); track user.id) {
+  @for (user of usersService.users(); track user.id) {
   <li class="flex items-center my-2 cursor-pointer">
     <img [srcset]="user.avatar" alt="" class="rounded w-14" />
-    <a [routerLink]="['dashboard/users', user.id]" class="mx-5 hover:underline"
+    <a [routerLink]="['/dashboard/user', user.id]" class="mx-5 hover:underline"
       >{{ user.first_name }} {{ user.last_name }}</a
     >
   </li>
