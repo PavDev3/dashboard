@@ -19,7 +19,6 @@ import { TitleComponent } from '../../../shared/title/title.component';
     </pre
     >
   `,
-  styles: ``,
 })
 export class ChangeDetectionComponent {
   public currentFramework = computed(() => {
