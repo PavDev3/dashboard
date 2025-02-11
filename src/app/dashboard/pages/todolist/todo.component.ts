@@ -74,17 +74,28 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoComponent {
+  todo$ = signal<string[]>([
+    'Buy groceries',
+    'Finish Angular course',
+    'Learn RxJS',
+  ]);
+
+  formValue = signal('');
+
+  form = new FormGroup({
+    todo: new FormControl(''),
+  });
+
   updateSignal() {
-    const newTodo = this.form.value.todo?.trim();
+    const newTodo = this.formValue().trim();
     if (newTodo) {
-      this.todo$.set([...this.todo$(), newTodo]);
-      this.form.reset();
+      this.todo$.update((todos) => [...todos, newTodo]);
+      this.formValue.set('');
     }
   }
 
   removeTodo(todo: string) {
     /*
-    (t) => t !== todo:
     t representa cada elemento del array todos.
     t !== todo significa que solo mantiene los elementos que no sean iguales a todo.
     Si t === todo, el elemento se excluye del nuevo array.*/
@@ -94,14 +105,4 @@ export class TodoComponent {
   resetTodo() {
     this.todo$.set([]);
   }
-
-  todo$ = signal<string[]>([
-    'Buy groceries',
-    'Finish Angular course',
-    'Learn RxJS',
-  ]);
-
-  form = new FormGroup({
-    todo: new FormControl(''),
-  });
 }
