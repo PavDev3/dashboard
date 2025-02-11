@@ -72,6 +72,15 @@ export const routes: Routes = [
             './dashboard/pages/view-transition/view-transition2.component'
           ).then((m) => m.ViewTransition2Component),
       },
+
+      {
+        path: 'todolist',
+        title: 'Todo List',
+        loadComponent: () =>
+          import('./dashboard/pages/todolist/todo.component').then(
+            (m) => m.TodoComponent
+          ),
+      },
       {
         path: '',
         redirectTo: 'control-flow',
