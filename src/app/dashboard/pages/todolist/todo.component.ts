@@ -9,7 +9,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
     <div class="container mx-auto p-4 max-w-2xl">
       <h1 class="text-3xl font-bold text-gray-800 mb-6">Lista de Tareas</h1>
 
-      <form [formGroup]="form" class="mb-8">
+      <form [formGroup]="form" class="mb-8" (ngSubmit)="addToDo()">
         <div class="flex gap-2">
           <input
             formControlName="todo"
@@ -17,7 +17,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
             class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
           />
           <button
-            (click)="updateSignal()"
+            type="submit"
             class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
           >
             Agregar
@@ -26,7 +26,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
       </form>
 
       <ul class="space-y-3">
-        @for (todo of todo$(); track todo) {
+        @for (todo of toDoList(); track todo) {
         <li
           class="flex items-center gap-3 p-3 bg-white rounded-lg shadow hover:shadow-md transition-shadow duration-200 border border-gray-100"
         >
@@ -55,7 +55,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
         }
       </ul>
 
-      @if (todo$().length > 0) {
+      @if (toDoList().length > 0) {
       <div class="flex justify-end mt-4">
         <button
           (click)="resetTodo()"
@@ -64,7 +64,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
           Reset lista
         </button>
       </div>
-      } @if (todo$().length === 0) {
+      } @if (toDoList().length === 0) {
       <div class="text-center py-8 text-gray-500">
         No hay tareas pendientes. ¡Agrega una!
       </div>
@@ -74,23 +74,21 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoComponent {
-  todo$ = signal<string[]>([
+  toDoList = signal<string[]>([
     'Buy groceries',
     'Finish Angular course',
     'Learn RxJS',
   ]);
 
-  formValue = signal('');
-
   form = new FormGroup({
     todo: new FormControl(''),
   });
 
-  updateSignal() {
-    const newTodo = this.formValue().trim();
+  addToDo() {
+    const newTodo = this.form.get('todo')?.value?.trim();
     if (newTodo) {
-      this.todo$.update((todos) => [...todos, newTodo]);
-      this.formValue.set('');
+      this.toDoList.update((todos) => [...todos, newTodo]);
+      this.form.reset();
     }
   }
 
@@ -99,10 +97,10 @@ export class TodoComponent {
     t representa cada elemento del array todos.
     t !== todo significa que solo mantiene los elementos que no sean iguales a todo.
     Si t === todo, el elemento se excluye del nuevo array.*/
-    this.todo$.update((todos) => todos.filter((t) => t !== todo));
+    this.toDoList.update((todos) => todos.filter((t) => t !== todo));
   }
 
   resetTodo() {
-    this.todo$.set([]);
+    this.toDoList.set([]);
   }
 }
